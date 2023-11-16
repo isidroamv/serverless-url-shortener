@@ -58,3 +58,8 @@ Code: 302
 Redirect to https://www.goodreads.com/
 ```
 
+
+## TODO
+- Add delete endpoint
+- Add update endpoint
+- Add click counter
