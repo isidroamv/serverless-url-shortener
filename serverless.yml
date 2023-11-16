@@ -5,10 +5,57 @@ provider:
   name: aws
   runtime: python3.9
 
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - 'dynamodb:PutItem'
+        - 'dynamodb:GetItem'
+        - 'dynamodb:DeleteItem'
+        - 'dynamodb:Scan'
+        - 'dynamodb:Query'
+        - 'dynamodb:UpdateItem'
+      Resource: arn:aws:dynamodb:*:*:table/${self:service}-table-${sls:stage}
+
+  environment:
+    DYNAMODB_TABLE: ${self:service}-table-${sls:stage}
+    API_URL: !GetAtt HttpApi.ApiEndpoint
+
+
 functions:
-  hello:
-    handler: handler.hello
+  generateShortUrl:
+    handler: handler.generateShortUrl
     events:
       - httpApi:
-          path: /
+          path: /generate-short-url
+          method: post
+  
+  getOriginalUrl:
+    handler: handler.getOriginalUrl
+    events:
+      - httpApi:
+          path: /get-original-url
           method: get
+  
+  redirect:
+    handler: handler.redirect
+    events:
+      - httpApi:
+          path: /{shortId}
+          method: get
+  
+resources:
+  Resources:
+    DynamoDBTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: ${self:service}-table-${sls:stage}
+        AttributeDefinitions:
+          - AttributeName: shortId
+            AttributeType: S
+        KeySchema:
+          - AttributeName: shortId
+            KeyType: HASH
+          
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1

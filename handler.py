@@ -1,12 +1,27 @@
 import json
 
 
-def hello(event, context):
+def generateShortUrl(event, context):
     body = {
-        "message": "Go Serverless v3.0! Your function executed successfully!",
-        "input": event,
+        "message": "generateShortUrl",
     }
 
     response = {"statusCode": 200, "body": json.dumps(body)}
+
+    return response
+
+
+def getOriginalUrl(event, context):
+    body = {
+        "message": "getOriginalUrl",
+    }
+
+    response = {"statusCode": 200, "body": json.dumps(body)}
+
+    return response
+
+def redirect(event, context):
+
+    response = {"statusCode": 200, "body": "Redirecting..."}
 
     return response
