@@ -23,21 +23,21 @@ provider:
 
 functions:
   generateShortUrl:
-    handler: handler.generateShortUrl
+    handler: generateShortUrl.generateShortUrl
     events:
       - httpApi:
           path: /generate-short-url
           method: post
   
   getOriginalUrl:
-    handler: handler.getOriginalUrl
+    handler: getOriginalUrl.getOriginalUrl
     events:
       - httpApi:
           path: /get-original-url
           method: get
   
   redirect:
-    handler: handler.redirect
+    handler: handleRedirect.redirect
     events:
       - httpApi:
           path: /{shortId}
