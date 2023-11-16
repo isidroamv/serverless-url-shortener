@@ -24,12 +24,18 @@ def getOriginalUrl(event, context):
     if not queryParameters or not queryParameters['shortUrl']:
         return {
             "statusCode": 400,
+            "body": json.dumps({
+                "message": "Missing short URL"
+            })
         }
 
     shortUrl = queryParameters['shortUrl']
     if not shortUrl.startswith(os.environ['API_URL']):
         return {
             "statusCode": 400,
+            "body": json.dumps({
+                "message": "Invalid short URL"
+            })
         }
 
     shortId = shortUrl.replace(os.environ['API_URL'] + '/', '')

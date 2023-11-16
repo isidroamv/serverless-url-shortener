@@ -35,6 +35,9 @@ def generateShortUrl(event, context):
     if body is None or body['originalUrl'] is None:
         return {
             "statusCode": 400,
+            "body": json.dumps({
+                "message": "Missing original URL"
+            })
         }
     
     shortId = generateShotId()
